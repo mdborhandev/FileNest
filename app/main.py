@@ -1,8 +1,11 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 from app.api.v1.router import router as api_router
 from app.core.config import settings
@@ -30,3 +33,11 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix=settings.api_v1_prefix)
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+LANDING_PAGE = STATIC_DIR / "index.html"
+
+
+@app.get("/", include_in_schema=False)
+async def root() -> FileResponse:
+    return FileResponse(LANDING_PAGE)
