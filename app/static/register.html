@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account — FileNest</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a class="brand" href="/">FileNest</a>
+        <div class="nav-links">
+            <a class="btn btn-ghost" href="/docs">API Docs</a>
+        </div>
+    </nav>
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <h1>Create your account</h1>
+            <p class="sub">Free to use — no credit card required.</p>
+
+            <div class="alert alert-error" data-alert style="display:none;"></div>
+
+            <form id="auth-form" data-mode="register" novalidate>
+                <div class="field">
+                    <label for="full_name">Full name <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+                    <input id="full_name" name="full_name" type="text" autocomplete="name">
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required>
+                    <span class="field-msg">Enter a valid email address.</span>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="new-password" required>
+                    <span class="field-msg">At least 8 characters.</span>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit" data-label="Create account" data-busy="Creating account…">Create account</button>
+            </form>
+
+            <p class="auth-footer">Already have an account? <a href="/login">Log in</a></p>
+        </div>
+    </main>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/auth-forms.js"></script>
+</body>
+</html>

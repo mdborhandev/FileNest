@@ -12,6 +12,7 @@ from app.core.exceptions import (
 )
 from app.models.user import User
 from app.schemas.user import (
+    LogoutRequest,
     RefreshRequest,
     TokenPair,
     UserCreate,
@@ -21,6 +22,7 @@ from app.schemas.user import (
 from app.services.auth import (
     authenticate_user,
     issue_token_pair,
+    revoke_refresh_token,
     rotate_refresh_token,
 )
 from app.services.users import create_user
@@ -59,7 +61,7 @@ async def login(
             detail=str(exc),
             headers={"WWW-Authenticate": "Bearer"},
         ) from exc
-    return await issue_token_pair(db, user)
+    return await issue_token_pair(db, user, update_last_login=True)
 
 
 @router.post("/refresh", response_model=TokenPair)
@@ -82,3 +84,11 @@ async def get_me(
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> User:
     return current_user
+
+
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+async def logout(
+    token_in: LogoutRequest,
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> None:
+    await revoke_refresh_token(db, token_in.refresh_token)

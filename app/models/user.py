@@ -1,4 +1,6 @@
-from sqlalchemy import Boolean, Integer, String, UniqueConstraint, false, true
+from datetime import datetime
+
+from sqlalchemy import Boolean, DateTime, Integer, String, UniqueConstraint, false, true
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base, TimestampMixin
@@ -27,7 +29,7 @@ class User(TimestampMixin, Base):
         server_default=false(),
         nullable=False,
     )
-    refresh_token_hash: Mapped[str | None] = mapped_column(
-        String(64),
+    last_login_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
         nullable=True,
     )
