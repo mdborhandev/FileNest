@@ -7,6 +7,7 @@ from alembic import context
 from app.core.config import settings
 from app.models import User
 from app.models.base import Base
+from app.models.password_reset import PasswordReset
 
 config = context.config
 
