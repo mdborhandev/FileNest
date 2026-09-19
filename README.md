@@ -2,6 +2,14 @@
 
 FastAPI backend base for FileNest, a PDF tools platform. The service uses asynchronous SQLAlchemy with PostgreSQL, Alembic migrations, JWT authentication, pydantic-settings, and a Celery worker backed by Redis.
 
+## Quick Start
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Press `Ctrl+C` to stop the server.
+
 ## Features
 
 - Async FastAPI application with API versioning under `/api/v1`
@@ -17,6 +25,16 @@ FastAPI backend base for FileNest, a PDF tools platform. The service uses asynch
 - Celery application and task module configured for Redis
 - Server-rendered frontend (landing, login, sign-up) served from FastAPI static files
 - Pytest integration test suite for the auth API
+
+## Stop the server
+
+In the same terminal, press `Ctrl+C`.
+
+If you don't have access to that terminal:
+
+```bash
+pgrep -f "uvicorn app.main:app" | xargs kill
+```
 
 ## Project structure
 
