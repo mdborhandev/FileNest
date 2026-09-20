@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     api_v1_prefix: str = "/api/v1"
 
-    database_url: str = "postgresql+asyncpg://postgres:fahim123@localhost:5432/filenest_dev"
+    database_url: str = "postgresql+asyncpg://postgres:replace-me@localhost:5432/filenest_dev"
     database_pool_size: int = 5
     database_max_overflow: int = 10
 
