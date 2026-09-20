@@ -60,7 +60,7 @@
 
 | ID | Task | Status | Pri | Size | Depends | Acceptance / notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2.01 | **Rotate the exposed DB password**; remove it from any doc; confirm `.env` is git-ignored; scan git history | ❌ | P0 | S | — | F-01. `gitleaks` finds nothing; new password only in `.env` |
+| 2.01 | **Rotate the exposed DB password**; remove it from any doc; confirm `.env` is git-ignored; scan git history | 🔄 | P0 | S | — | F-01. Rotation ✅ (new password in Postgres + `.env` only), defaults cleaned, working tree clean, 9/9 tests pass. **Remaining:** old password is in 4 commits on all branches incl. `origin/*` → history rewrite + force-push pending decision |
 | 2.02 | `alembic/env.py` reads DB URL from `settings`; remove/neutralise the hard-coded URL in `alembic.ini` | ❌ | P0 | S | — | F-16. `alembic upgrade head` hits the same DB as the app |
 | 2.03 | Migration: `password_resets.expires_at, created_at`; `refresh_tokens.created_at, replaced_by_id`; indexes on FKs, `family_id`, `expires_at`; unique `lower(email)` index | ❌ | P0 | M | 2.02 | F-04. Downgrade works; existing tests still pass |
 | 2.04 | Add `pyproject.toml` (ruff + mypy per `rules.md` §19) and fix reported issues; add `.pre-commit-config.yaml` | ❌ | P1 | M | — | `ruff check`, `ruff format --check`, `mypy app` all clean |
