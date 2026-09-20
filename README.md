@@ -8,6 +8,10 @@ FastAPI backend base for FileNest, a PDF tools platform. The service uses asynch
 uvicorn app.main:app --reload
 ```
 
+cd "/home/borhan-uddin-fahim/DRIVE A/Projects/FileNest"
+source .venv/bin/activate
+uvicorn app.main:app --reload
+
 Press `Ctrl+C` to stop the server.
 
 ## Features
