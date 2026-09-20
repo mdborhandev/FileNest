@@ -14,9 +14,9 @@
 | Item | Value |
 | --- | --- |
 | Product version | 0.1.0 (auth MVP) — docs are at 0.2.0 |
-| Milestone status | M1 Auth ✅ · M2 Hardening ❌ · M3 File infra ❌ · M4 PDF tools ❌ · M5 Web UI ❌ · M6 Security ❌ · M7 Release ❌ |
-| MVP progress | 11 of 95 tasks (see `tasks.md` → Progress) |
-| Current focus | **M2:** 2.01 rotate exposed DB password → 2.02 fix Alembic URL → 2.03 missing migration columns → 2.06 cross-tab refresh lock → 2.04/2.05 lint + CI |
+| Milestone status | M1 Auth ✅ · M2 Hardening 🔄 (2.01 ✅) · M3 File infra ❌ · M4 PDF tools ❌ · M5 Web UI ❌ · M6 Security ❌ · M7 Release ❌ |
+| MVP progress | 12 of 95 tasks (see `tasks.md` → Progress) |
+| Current focus | **M2:** 2.02 fix Alembic URL → 2.03 missing migration columns → 2.06 cross-tab refresh lock → 2.04/2.05 lint + CI |
 | Blocked on decisions | D1–D6 confirmation (`ANALYSIS.md` §4); open questions Q1–Q6 (`prd.md` §14) |
 | Not provided to the last review | `architecture.md`, `PROJECT_STACK.md`, `CHECKLIST.md` (may be stale vs D1–D6) |
 
@@ -218,7 +218,7 @@ grep -cE '^\| [0-9]+\.[0-9]+ ' tasks.md               # total (all milestones)
 
 | # | Issue | Task |
 | --- | --- | --- |
-| I-1 | Dev DB password was written in the v0.1.0 memory file → rotate | 2.01 |
+| I-1 | Dev DB password was written in the v0.1.0 memory file → rotate | 2.01 ✅ (old credential is dead; history rewrite declined by decision) |
 | I-2 | `alembic.ini` has a hard-coded URL that differs from the app's real DB (user and database name) | 2.02 |
 | I-3 | `password_resets` has no `expires_at` | 2.03 |
 | I-4 | Multi-tab refresh causes false reuse detection | 2.06 |

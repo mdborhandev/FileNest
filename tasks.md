@@ -60,7 +60,7 @@
 
 | ID | Task | Status | Pri | Size | Depends | Acceptance / notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2.01 | **Rotate the exposed DB password**; remove it from any doc; confirm `.env` is git-ignored; scan git history | 🔄 | P0 | S | — | F-01. Rotation ✅ (new password in Postgres + `.env` only), defaults cleaned, working tree clean, 9/9 tests pass. **Remaining:** old password is in 4 commits on all branches incl. `origin/*` → history rewrite + force-push pending decision |
+| 2.01 | **Rotate the exposed DB password**; remove it from any doc; confirm `.env` is git-ignored; scan git history | ✅ | P0 | S | — | F-01. New password in Postgres + `.env` only; defaults cleaned (641f490); working tree clean; 9/9 tests pass. History rewrite **declined by decision** — old credential is rotated/dead, so it can no longer be used |
 | 2.02 | `alembic/env.py` reads DB URL from `settings`; remove/neutralise the hard-coded URL in `alembic.ini` | ❌ | P0 | S | — | F-16. `alembic upgrade head` hits the same DB as the app |
 | 2.03 | Migration: `password_resets.expires_at, created_at`; `refresh_tokens.created_at, replaced_by_id`; indexes on FKs, `family_id`, `expires_at`; unique `lower(email)` index | ❌ | P0 | M | 2.02 | F-04. Downgrade works; existing tests still pass |
 | 2.04 | Add `pyproject.toml` (ruff + mypy per `rules.md` §19) and fix reported issues; add `.pre-commit-config.yaml` | ❌ | P1 | M | — | `ruff check`, `ruff format --check`, `mypy app` all clean |
@@ -231,7 +231,7 @@ Watermark · Protect/Unlock PDF · Page numbers · Reorder pages tool · OCR · 
 | Milestone | Scope | Done | Total | Status |
 | --- | --- | --- | --- | --- |
 | 1. Auth & Infrastructure | MVP | 11 | 11 | ✅ Complete |
-| 2. Hardening & Housekeeping | MVP | 0 | 14 | ❌ Not started |
+| 2. Hardening & Housekeeping | MVP | 1 | 14 | 🔄 In progress |
 | 3. File Infrastructure | MVP | 0 | 11 | ❌ Not started |
 | 4. PDF Tools | MVP | 0 | 20 | ❌ Not started |
 | 5. MVP Web UI (server-rendered) | MVP | 0 | 19 | ❌ Not started |
@@ -239,11 +239,11 @@ Watermark · Protect/Unlock PDF · Page numbers · Reorder pages tool · OCR · 
 | 7. Release Readiness | MVP | 0 | 10 | ❌ Not started |
 | 8. Background Processing | Post-MVP | 0 | 8 | ❌ Post-MVP |
 | 9. React Frontend | Post-MVP | 0 | 6 | ❌ Post-MVP (conditional) |
-| **MVP total (M1–M7)** | | **11** | **95** | **12 %** |
+| **MVP total (M1–M7)** | | **12** | **95** | **13 %** |
 | Post-MVP (M8–M9) | | 0 | 14 | — |
 | All milestones | | 11 | 109 | 10 % |
 
-**MVP completion: 11 of 95 tasks (12 %).** The previous "~25 %" was not derived from the task list: it counted finished documentation files as progress and mixed in post-MVP work. The new plan is also more granular and adds the hardening, security and release work the old plan lacked, so the two numbers are not directly comparable — the honest reading is that the auth foundation is done and most of the product is still ahead. Task count is not effort: the remaining MVP work is dominated by M3–M5 (L-sized tasks). P0 tasks in MVP scope: 9 of 41 done.
+**MVP completion: 12 of 95 tasks (13 %).** The previous "~25 %" was not derived from the task list: it counted finished documentation files as progress and mixed in post-MVP work. The new plan is also more granular and adds the hardening, security and release work the old plan lacked, so the two numbers are not directly comparable — the honest reading is that the auth foundation is done and most of the product is still ahead. Task count is not effort: the remaining MVP work is dominated by M3–M5 (L-sized tasks). P0 tasks in MVP scope: 10 of 41 done.
 
 ---
 
