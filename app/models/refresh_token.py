@@ -33,9 +33,13 @@ class RefreshToken(TimestampMixin, Base):
         Uuid(as_uuid=True), index=True, nullable=False
     )
     expires_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=False
+        DateTime(timezone=True), index=True, nullable=False
     )
     revoked_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
+        nullable=True,
+    )
+    replaced_by_id: Mapped[int | None] = mapped_column(
+        ForeignKey("refresh_tokens.id", ondelete="SET NULL"),
         nullable=True,
     )

@@ -62,7 +62,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 2.01 | **Rotate the exposed DB password**; remove it from any doc; confirm `.env` is git-ignored; scan git history | ✅ | P0 | S | — | F-01. New password in Postgres + `.env` only; defaults cleaned (641f490); working tree clean; 9/9 tests pass. History rewrite **declined by decision** — old credential is rotated/dead, so it can no longer be used |
 | 2.02 | `alembic/env.py` reads DB URL from `settings`; remove/neutralise the hard-coded URL in `alembic.ini` | ✅ | P0 | S | — | F-16. Hard-coded `filenest:filenest@…/filenest` URL removed from `alembic.ini` (replaced with comment); `env.py` already read from `settings`; `current`, `upgrade head`, and offline `--sql` verified against the real DB |
-| 2.03 | Migration: `password_resets.expires_at, created_at`; `refresh_tokens.created_at, replaced_by_id`; indexes on FKs, `family_id`, `expires_at`; unique `lower(email)` index | ❌ | P0 | M | 2.02 | F-04. Downgrade works; existing tests still pass |
+| 2.03 | Migration: `password_resets.expires_at, created_at`; `refresh_tokens.created_at, replaced_by_id`; indexes on FKs, `family_id`, `expires_at`; unique `lower(email)` index | ✅ | P0 | M | 2.02 | F-04. Migration `7c8294d5dcf2`: added `password_resets.expires_at` (not null, 30-min server default, indexed) and `refresh_tokens.replaced_by_id` (self-FK, `SET NULL`); `expires_at` indexes; `uq_users_email_lower` unique functional index on `lower(email)` replacing `uq_users_email`. Downgrade round-trip verified; 9/9 tests pass |
 | 2.04 | Add `pyproject.toml` (ruff + mypy per `rules.md` §19) and fix reported issues; add `.pre-commit-config.yaml` | ❌ | P1 | M | — | `ruff check`, `ruff format --check`, `mypy app` all clean |
 | 2.05 | CI workflow (GitHub Actions): lint → type check → migrate → pytest (Postgres service) → `pip-audit` | ❌ | P1 | M | 2.04 | Required check on PRs |
 | 2.06 | **Cross-tab refresh lock** in `api.js` (`navigator.locks` + re-read after lock) and `storage`-event logout; optional server grace window (≤ 10 s, uses `replaced_by_id`) | ❌ | P0 | M | 2.03 | F-02. Test: two tabs get 401 simultaneously → exactly one `/auth/refresh` call, no logout (FR-A8) |
@@ -231,7 +231,7 @@ Watermark · Protect/Unlock PDF · Page numbers · Reorder pages tool · OCR · 
 | Milestone | Scope | Done | Total | Status |
 | --- | --- | --- | --- | --- |
 | 1. Auth & Infrastructure | MVP | 11 | 11 | ✅ Complete |
-| 2. Hardening & Housekeeping | MVP | 2 | 14 | 🔄 In progress |
+| 2. Hardening & Housekeeping | MVP | 3 | 14 | 🔄 In progress |
 | 3. File Infrastructure | MVP | 0 | 11 | ❌ Not started |
 | 4. PDF Tools | MVP | 0 | 20 | ❌ Not started |
 | 5. MVP Web UI (server-rendered) | MVP | 0 | 19 | ❌ Not started |
@@ -239,11 +239,11 @@ Watermark · Protect/Unlock PDF · Page numbers · Reorder pages tool · OCR · 
 | 7. Release Readiness | MVP | 0 | 10 | ❌ Not started |
 | 8. Background Processing | Post-MVP | 0 | 8 | ❌ Post-MVP |
 | 9. React Frontend | Post-MVP | 0 | 6 | ❌ Post-MVP (conditional) |
-| **MVP total (M1–M7)** | | **13** | **95** | **14 %** |
+| **MVP total (M1–M7)** | | **14** | **95** | **15 %** |
 | Post-MVP (M8–M9) | | 0 | 14 | — |
 | All milestones | | 11 | 109 | 10 % |
 
-**MVP completion: 13 of 95 tasks (14 %).** The previous "~25 %" was not derived from the task list: it counted finished documentation files as progress and mixed in post-MVP work. The new plan is also more granular and adds the hardening, security and release work the old plan lacked, so the two numbers are not directly comparable — the honest reading is that the auth foundation is done and most of the product is still ahead. Task count is not effort: the remaining MVP work is dominated by M3–M5 (L-sized tasks). P0 tasks in MVP scope: 11 of 41 done.
+**MVP completion: 14 of 95 tasks (15 %).** The previous "~25 %" was not derived from the task list: it counted finished documentation files as progress and mixed in post-MVP work. The new plan is also more granular and adds the hardening, security and release work the old plan lacked, so the two numbers are not directly comparable — the honest reading is that the auth foundation is done and most of the product is still ahead. Task count is not effort: the remaining MVP work is dominated by M3–M5 (L-sized tasks). P0 tasks in MVP scope: 12 of 41 done.
 
 ---
 

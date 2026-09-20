@@ -14,9 +14,9 @@
 | Item | Value |
 | --- | --- |
 | Product version | 0.1.0 (auth MVP) — docs are at 0.2.0 |
-| Milestone status | M1 Auth ✅ · M2 Hardening 🔄 (2.01–2.02 ✅) · M3 File infra ❌ · M4 PDF tools ❌ · M5 Web UI ❌ · M6 Security ❌ · M7 Release ❌ |
-| MVP progress | 13 of 95 tasks (see `tasks.md` → Progress) |
-| Current focus | **M2:** 2.03 missing migration columns → 2.06 cross-tab refresh lock → 2.04/2.05 lint + CI |
+| Milestone status | M1 Auth ✅ · M2 Hardening 🔄 (2.01–2.03 ✅) · M3 File infra ❌ · M4 PDF tools ❌ · M5 Web UI ❌ · M6 Security ❌ · M7 Release ❌ |
+| MVP progress | 14 of 95 tasks (see `tasks.md` → Progress) |
+| Current focus | **M2:** 2.06 cross-tab refresh lock → 2.04/2.05 lint + CI → 2.13 confirm D1–D6 |
 | Blocked on decisions | D1–D6 confirmation (`ANALYSIS.md` §4); open questions Q1–Q6 (`prd.md` §14) |
 | Not provided to the last review | `architecture.md`, `PROJECT_STACK.md`, `CHECKLIST.md` (may be stale vs D1–D6) |
 
@@ -66,7 +66,7 @@ app/
   static/{index,login,register}.html
   static/css/styles.css
   static/js/{api,auth-forms,main}.js
-alembic/versions/7697cdbf4561_init.py    # current head
+alembic/versions/7697cdbf4561_init.py, 7c8294d5dcf2_add_reset_token_and_refresh_token_.py    # 7c8294d5dcf2 is head
 tests/{conftest,test_auth}.py
 .env, .env.example, requirements.txt, alembic.ini, pytest.ini
 docs: prd.md design.md rules.md tasks.md memory.md ANALYSIS.md (+ architecture.md, PROJECT_STACK.md, CHECKLIST.md, README.md)
@@ -179,9 +179,9 @@ grep -cE '^\| [0-9]+\.[0-9]+ ' tasks.md               # total (all milestones)
 
 ## 9. Data Model
 
-**Current tables:** `users` (id, email, hashed_password, full_name, is_active, is_superuser, last_login_at, timestamps) · `refresh_tokens` (id, user_id, token_hash, family_id, expires_at, revoked_at) · `password_resets` (id, user_id, token_hash, used_at).
+**Current tables:** `users` (id, email, hashed_password, full_name, is_active, is_superuser, last_login_at, timestamps) · `refresh_tokens` (id, user_id, token_hash, family_id, expires_at, revoked_at, replaced_by_id, timestamps) · `password_resets` (id, user_id, token_hash, used_at, expires_at, timestamps).
 
-**Pending migration (task 2.03):** `password_resets.expires_at` (**currently missing — reset tokens cannot expire in the DB**) and `created_at`; `refresh_tokens.created_at` and `replaced_by_id`; indexes on FKs / `family_id` / `expires_at`; unique index on `lower(users.email)`.
+**Applied (task 2.03 ✅, migration `7c8294d5dcf2`):** `password_resets.expires_at` (not null, 30-min server default, indexed) · `refresh_tokens.replaced_by_id` (nullable self-FK, `ON DELETE SET NULL`) · `expires_at` indexes on both tables · unique functional index `uq_users_email_lower` on `lower(email)` (replaces `uq_users_email`).
 
 **Planned:** `pdf_files` (M3), `pdf_jobs` (M8) — columns in `prd.md` §8.
 
@@ -220,7 +220,7 @@ grep -cE '^\| [0-9]+\.[0-9]+ ' tasks.md               # total (all milestones)
 | --- | --- | --- |
 | I-1 | Dev DB password was written in the v0.1.0 memory file → rotate | 2.01 ✅ (old credential is dead; history rewrite declined by decision) |
 | I-2 | `alembic.ini` has a hard-coded URL that differs from the app's real DB (user and database name) | 2.02 ✅ (URL removed; runtime source of truth is app settings) |
-| I-3 | `password_resets` has no `expires_at` | 2.03 |
+| I-3 | `password_resets` has no `expires_at` | 2.03 ✅ (also `replaced_by_id`, expiry indexes, unique `lower(email)` index) |
 | I-4 | Multi-tab refresh causes false reuse detection | 2.06 |
 | I-5 | No `pyproject.toml`/CI, so `rules.md` was not enforced (`ruff` cache exists; version reported as 0.16.7 — verify) | 2.04, 2.05 |
 | I-6 | Dev/test packages are in runtime `requirements.txt` | 2.12 |
@@ -232,7 +232,7 @@ grep -cE '^\| [0-9]+\.[0-9]+ ' tasks.md               # total (all milestones)
 
 - **Do not** run blocking PDF/image code on the event loop — use `run_pdf_job()` (once it exists).
 - The test suite needs `TEST_DATABASE_URL` or a derivable `filenest_test` database that already exists.
-- Alembic must use the app's settings for the DB URL; until 2.02 lands, double-check which database a migration is touching.
+- Alembic always uses the app's settings for the DB URL (`alembic.ini` carries no URL — see 2.02); never re-add a hard-coded URL.
 - CORS only allows `http://localhost:3000`; static pages are same-origin, so it does not affect them.
 - Never trust file extensions or `Content-Type`; always sniff magic bytes.
 - Check licences before adding any PDF library (AGPL trap: PyMuPDF/MuPDF, Ghostscript).
