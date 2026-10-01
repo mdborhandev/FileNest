@@ -10,6 +10,7 @@
     <nav class="nav">
         <a class="brand" href="/">FileNest</a>
         <div class="nav-links">
+            <a class="btn btn-ghost" href="/convert">Convert</a>
             <a class="btn btn-ghost" href="/docs">API Docs</a>
             <div data-auth-area></div>
         </div>
@@ -32,9 +33,14 @@
                 <h3>Background Tasks</h3>
                 <p>Celery worker backed by Redis for long-running jobs.</p>
             </div>
+            <div class="card">
+                <h3>Format Converter</h3>
+                <p>Convert between PDF, TXT, HTML, and DOCX — no account required.</p>
+            </div>
         </div>
 
-        <a class="btn btn-primary" href="/register">Get started</a>
+        <a class="btn btn-primary" href="/convert">Try the converter</a>
+        <a class="btn btn-ghost" href="/register" style="margin-left:0.5rem;">Get started</a>
         <div class="status" id="status">Checking service health…</div>
     </main>
 

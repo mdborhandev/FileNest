@@ -49,6 +49,7 @@ app/
     v1/
       routes/
         auth.py
+        convert.py
         health.py
       router.py
   core/
@@ -65,6 +66,7 @@ app/
     user.py
   services/
     auth.py
+    converter.py
     passwords.py
     users.py
   static/
@@ -154,6 +156,28 @@ ping.delay()
 | `POST` | `/api/v1/auth/refresh` | No | Rotates a refresh token |
 | `POST` | `/api/v1/auth/logout` | No | Revokes the refresh token and its family |
 | `GET` | `/api/v1/auth/me` | Bearer token | Returns the current user |
+| `GET` | `/api/v1/convert/formats` | No | Lists supported conversions |
+| `POST` | `/api/v1/convert` | No | Upload a file + `to_format` (and optional `from_format`); returns a download token |
+| `GET` | `/api/v1/convert/{token}` | No | Download a converted file (single-use) |
+
+## Format converter
+
+Public (no authentication) document conversion between `pdf`, `txt`, `html`, and `docx`:
+
+```bash
+# List supported conversions
+curl http://localhost:8000/api/v1/convert/formats
+
+# Convert a file
+curl -X POST http://localhost:8000/api/v1/convert \
+  -F "file=@document.pdf" \
+  -F "to_format=txt"
+
+# Download the result using the returned token
+curl -o output.txt http://localhost:8000/api/v1/convert/<token>
+```
+
+Supported pairs: `pdf↔txt`, `pdf↔html`, `pdf↔docx`, `txt↔html`, `txt↔docx`, `docx↔html`.
 
 ## Frontend
 
@@ -161,6 +185,7 @@ The landing page, login and sign-up pages are static HTML/CSS/JS served by FastA
 
 ```text
 /          → landing page
+/convert    → format converter page
 /login     → login form
 /register  → sign-up form
 /docs      → interactive API documentation

@@ -55,3 +55,8 @@ async def login_page() -> FileResponse:
 @app.get("/register", include_in_schema=False)
 async def register_page() -> FileResponse:
     return _page("register.html")
+
+
+@app.get("/convert", include_in_schema=False)
+async def convert_page() -> FileResponse:
+    return _page("convert.html")

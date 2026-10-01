@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Convert — FileNest</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a class="brand" href="/">FileNest</a>
+        <div class="nav-links">
+            <a class="btn btn-ghost" href="/convert">Convert</a>
+            <a class="btn btn-ghost" href="/docs">API Docs</a>
+            <div data-auth-area></div>
+        </div>
+    </nav>
+
+    <main class="auth-wrapper">
+        <div class="auth-card" style="max-width: 560px;">
+            <h1>Document Converter</h1>
+            <p class="sub">Convert between PDF, TXT, HTML, and DOCX. No account required.</p>
+
+            <div class="alert alert-error" data-alert style="display:none;"></div>
+
+            <form id="convert-form" novalidate>
+                <div class="field">
+                    <label for="file">Source file</label>
+                    <input id="file" name="file" type="file" accept=".pdf,.txt,.html,.docx,.htm">
+                    <span class="field-msg">Choose a PDF, TXT, HTML, or DOCX file.</span>
+                </div>
+
+                <div class="field">
+                    <label for="from_format">From</label>
+                    <select id="from_format" name="from_format">
+                        <option value="">Auto-detect from filename</option>
+                        <option value="pdf">PDF</option>
+                        <option value="txt">TXT</option>
+                        <option value="html">HTML</option>
+                        <option value="docx">DOCX</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="to_format">To</label>
+                    <select id="to_format" name="to_format" required>
+                        <option value="">Select a format…</option>
+                        <option value="pdf">PDF</option>
+                        <option value="txt">TXT</option>
+                        <option value="html">HTML</option>
+                        <option value="docx">DOCX</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary btn-block" type="submit" data-label="Convert" data-busy="Converting…">Convert</button>
+            </form>
+
+            <div id="result" style="margin-top: 1.5rem; display:none;">
+                <div class="card" style="text-align:left;">
+                    <p class="sub" id="result-meta" style="margin-bottom:0.75rem;"></p>
+                    <a class="btn btn-primary btn-block" id="download-link" target="_blank" rel="noopener">Download result</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/convert.js"></script>
+</body>
+</html>
