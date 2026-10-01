@@ -5,12 +5,12 @@ FastAPI backend base for FileNest, a PDF tools platform. The service uses asynch
 ## Quick Start
 
 ```bash
-uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload
 ```
 
 cd "/home/borhan-uddin-fahim/DRIVE A/Projects/FileNest"
 source .venv/bin/activate
-uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload
 
 Press `Ctrl+C` to stop the server.
 
@@ -125,7 +125,7 @@ alembic upgrade head
 ## Run the API
 
 ```bash
-uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload
 ```
 
 The interactive API documentation is available at `http://localhost:8000/docs`.
